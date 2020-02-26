@@ -58,15 +58,19 @@ const removeAlbum = async (parent, args, context, info) => {
     // Elimina el album
     const deleteAlbum = await albumModel.findByIdAndRemove(albumId);
 
+    console.log(deleteAlbum)
     // Eliminar album del artista
-    artistModel.findById(deleteAlbum.artistID, function(err, doc) {
+    artistModel.findById(albumId, function(err, doc) {
       doc.albums.pull({ _id: albumId });
       doc.save();
     });
     // Eliminar canciones del album
-
-
+    deleteAlbum.songs.forEach(songID => {
+      songModel.findByIdAndRemove(songID);
+    });
+    
   } catch (error) {
+    console.log(error)
     throw new UserInputError("Error al borrar el album", {
       invalidArgs: Object.keys(args)
     });
@@ -77,10 +81,10 @@ const getAlbumSongs = async (parent, args, context, info) => {
   try {
     const { albumID } = args;
     const AlbumModel = mongoose.model("album");
-    return await AlbumModel.findById(albumID).populate("songs")
+    return await AlbumModel.findById(albumID).populate("songs");
   } catch (error) {
-    throw new UserInputError('Error al buscar albumes del artista', {
-      invalidArgs: Object.keys(args),
+    throw new UserInputError("Error al buscar albumes del artista", {
+      invalidArgs: Object.keys(args)
     });
   }
 };
@@ -89,10 +93,10 @@ const getAlbumArtist = async (parent, args, context, info) => {
   try {
     const { albumID } = args;
     const AlbumModel = mongoose.model("album");
-    return await AlbumModel.findById(albumID).populate("artist")
+    return await AlbumModel.findById(albumID).populate("artist");
   } catch (error) {
-    throw new UserInputError('Error al buscar el artista del album', {
-      invalidArgs: Object.keys(args),
+    throw new UserInputError("Error al buscar el artista del album", {
+      invalidArgs: Object.keys(args)
     });
   }
 };

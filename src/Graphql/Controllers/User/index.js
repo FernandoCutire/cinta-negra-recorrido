@@ -1,7 +1,32 @@
 const mongoose = require("mongoose");
+const bcrypt = require('bcrypt');
 const { UserInputError } = require("apollo-server");
 
 const { createToken } = require("../../Controllers/Authentication");
+
+
+const userLogin = async (parent, args, context, info) => {
+  try {
+    const { email, password } = args;
+    const UserModel = mongoose.model('user');
+
+    const filterSearch = { email };
+    const currentUser = await UserModel.findOne(filterSearch);
+    if (currentUser) {
+      const validLogin = await bcrypt.compare(password, currentUser.password);
+      if (validLogin) {
+        const token = createToken(currentUser);
+        return { token };
+      }
+      throw true;
+    }
+    throw true;
+  } catch (error) {
+    throw new UserInputError('Error al hacer login', {
+      invalidArgs: Object.keys(args),
+    });
+  }
+}
 
 const getUser = async (parent, args, context, info) => {
   try {
@@ -62,5 +87,6 @@ module.exports = {
   getUser,
   addUser,
   updateUser,
-  removeUser
+  removeUser,
+  userLogin
 };

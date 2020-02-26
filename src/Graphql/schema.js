@@ -38,7 +38,7 @@ const typeDefs = gql`
     _id: ID
     title: String!
     genre: [String]
-    artist: [ID]
+    artist: ID
     songs: [ID]
     createdAt: Date
     updatedAt: Date
@@ -83,7 +83,7 @@ const typeDefs = gql`
   # argumento AlbumInput, para la mutation
   input AlbumInput {
     title: String!
-    artistID: ID
+    artist: ID
     genre: [String]
   }
 
@@ -108,6 +108,7 @@ const typeDefs = gql`
 
   type Mutation {
     # CUD USER
+    userLogin(email: String!, password: String!): Token
     addUser(userData: UserInput): Token
     updateUser(userID: ID, userData: ArtistInput): User
     removeUser(userID: ID): User 
