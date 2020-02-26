@@ -55,7 +55,9 @@ const removeAlbum = async (parent, args, context, info) => {
     const artistModel = mongoose.model("artist");
     const songModel = mongoose.model("song");
 
+    // Elimina el album
     const deleteAlbum = await albumModel.findByIdAndRemove(albumId);
+
     // Eliminar album del artista
     artistModel.findById(deleteAlbum.artistID, function(err, doc) {
       doc.albums.pull({ _id: albumId });
