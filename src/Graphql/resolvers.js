@@ -1,6 +1,6 @@
 const { getUser, addUser, updateUser, removeUser } = require("./Controllers/User");
-const {getArtist, addArtist, updateArtist, removeArtist} = require("./Controllers/Artist")
-const {getAlbum, addAlbum, updateAlbum, removeAlbum} = require("./Controllers/Album")
+const {getArtist, addArtist, updateArtist, removeArtist, getArtistAlbums} = require("./Controllers/Artist")
+const {getAlbum, addAlbum, updateAlbum, removeAlbum, getAlbumSongs, getAlbumArtist } = require("./Controllers/Album")
 const {getSong, addSong, updateSong, removeSong} = require("./Controllers/Song")
 
 
@@ -8,6 +8,9 @@ const resolvers = {
   Query: {
     getUser,
     getArtist,
+    getArtistAlbums,
+    getAlbumSongs,
+    getAlbumArtist,
     getAlbum,
     getSong,
   },

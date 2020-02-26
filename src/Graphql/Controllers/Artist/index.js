@@ -46,11 +46,34 @@ const removeArtist = async (parent, args, context, info) => {
   try {
     const { artistID } = args;
     const ArtistModel = mongoose.model("artist");
+    const albumModel = mongoose.model("album");
+    const songModel = mongoose.model("song");
+
+    const deleteArtist = await ArtistModel.findByIdAndRemove(artistID);
     
-    return await ArtistModel.findByIdAndRemove(artistID);
+    // Eliminar sus albumes
+
+    // Eliminar album del artista
+    artistModel.findById(deleteAlbum.artist, function(err, doc) {
+      doc.albums.pull({ _id: albumId });
+      doc.save();
+    });
+    // Eliminar sus canciones
   } catch (error) {
     throw new UserInputError("error al eliminar artista", {
       invalidArgs: Object.keys(args)
+    });
+  }
+};
+
+const getArtistAlbums = async (parent, args, context, info) => {
+  try {
+    const { artistID } = args;
+    const ArtistModel = mongoose.model("artist");
+    return await ArtistModel.findById(artistID).populate("albums")
+  } catch (error) {
+    throw new UserInputError('Error al buscar albumes del artista', {
+      invalidArgs: Object.keys(args),
     });
   }
 };
@@ -59,5 +82,6 @@ module.exports = {
   getArtist,
   addArtist,
   updateArtist,
-  removeArtist
+  removeArtist,
+  getArtistAlbums
 };

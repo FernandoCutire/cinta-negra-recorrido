@@ -24,5 +24,5 @@ mongoose
 
 
 server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
-  console.log(`🚀  Servidor listo en ${url}`);
+  console.log(` Servidor listo en ${url}`);
 });
