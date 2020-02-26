@@ -7,11 +7,13 @@ const addSong = async (parent, args, context, info) => {
     const { songData } = args;
     const songModel = mongoose.model("song");
     const albumModel = mongoose.model("album");
-    // const artistModel = mongoose.model("artist")
+
+    console.log(songData);
 
     const newSong = await songModel.create(songData);
-    const filterSearch = { _id: songData.albumId };
-    const update = { $push: { songs: newSong.id } };
+    console.log(newSong)
+    const filterSearch = { _id: songData.albumID };
+    const update = { $push: { songs: newSong.id} };
 
     await albumModel.findOneAndUpdate(filterSearch, update);
     return newSong;
@@ -36,7 +38,6 @@ const getSong = async (parent, args, context, info) => {
   }
 };
 
-
 const updateSong = async (parent, args, context, info) => {
   try {
     const { songData, songID } = args;
@@ -55,13 +56,12 @@ const removeSong = async (parent, args, context, info) => {
   try {
     const { songID } = args;
     const SongModel = mongoose.model("song");
-    const albumModel = mongoose.model("album"); 
+    const albumModel = mongoose.model("album");
 
     // Elimina cancion
     return await SongModel.findByIdAndRemove(songID);
-    
-    // Elimina la cancion del album
 
+    // Elimina la cancion del album
   } catch (error) {
     throw new UserInputError("Error al eliminar cancion", {
       invalidArgs: Object.keys(args)

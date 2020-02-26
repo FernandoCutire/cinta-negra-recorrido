@@ -83,7 +83,7 @@ const getAlbumSongs = async (parent, args, context, info) => {
     const AlbumModel = mongoose.model("album");
     return await AlbumModel.findById(albumID).populate("songs");
   } catch (error) {
-    throw new UserInputError("Error al buscar albumes del artista", {
+    throw new UserInputError("Error al buscar canciones del album", {
       invalidArgs: Object.keys(args)
     });
   }
