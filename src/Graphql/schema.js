@@ -38,7 +38,7 @@ const typeDefs = gql`
     _id: ID
     title: String!
     genre: [String]
-    artistID: ID
+    artist: ID
     songs: [ID]
     createdAt: Date
     updatedAt: Date
@@ -99,7 +99,7 @@ const typeDefs = gql`
     # TODOS LOS GETS
     getUser(userID: ID): [User]
     getArtist(artistID: ID): Artist
-    getAlbum(albumID: ID): Album
+    getAlbum(albumID: ID): [Album]
     getSong(songID: ID): Song
     getArtistAlbums(artistID: ID): ArtistInfo
     getAlbumSongs(albumID: ID): AlbumInfo

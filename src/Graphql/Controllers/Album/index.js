@@ -9,7 +9,7 @@ const getAlbum = async (parent, args, context, info) => {
     const albums = await albumModel.find(filterData);
     return albums;
   } catch (error) {
-    throw new UserInputError("Error al buscar usuario", {
+    throw new UserInputError("Error al buscar album", {
       invalidArgs: Object.keys(args)
     });
   }
