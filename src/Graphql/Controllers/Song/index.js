@@ -8,10 +8,8 @@ const addSong = async (parent, args, context, info) => {
     const songModel = mongoose.model("song");
     const albumModel = mongoose.model("album");
 
-    console.log(songData);
 
     const newSong = await songModel.create(songData);
-    console.log(newSong)
     const filterSearch = { _id: songData.albumID };
     const update = { $push: { songs: newSong.id} };
 

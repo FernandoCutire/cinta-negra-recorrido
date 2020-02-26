@@ -38,7 +38,7 @@ const typeDefs = gql`
     _id: ID
     title: String!
     genre: [String]
-    artist: ID
+    artistID: ID
     songs: [ID]
     createdAt: Date
     updatedAt: Date
