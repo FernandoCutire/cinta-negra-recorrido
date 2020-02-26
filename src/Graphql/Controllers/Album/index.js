@@ -6,14 +6,15 @@ const getAlbum = async (parent, args, context, info) => {
     const { albumID } = args;
     const albumModel = mongoose.model("album");
     const filterData = { _id: albumID };
-    const albums = await albumModel.find(filterData);
-    return albums;
+    return await albumModel.find(filterData);
+    
   } catch (error) {
     throw new UserInputError("Error al buscar album", {
       invalidArgs: Object.keys(args)
     });
   }
 };
+
 
 const addAlbum = async (parent, args, context, info) => {
   try {

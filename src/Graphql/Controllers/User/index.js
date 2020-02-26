@@ -42,6 +42,8 @@ const getUser = async (parent, args, context, info) => {
   }
 };
 
+
+
 const addUser = async (parent, args, context, info) => {
   try {
     const { userData } = args;
