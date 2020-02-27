@@ -64,11 +64,11 @@ const removeAlbum = async (parent, args, context, info) => {
     console.log(deleteAlbum)
     
     // Eliminar album del artista
-    
-    artistModel.findById(albumID, function(err, doc) {
-      doc.albums.pull({ _id: albumID });
-      doc.save();
+    return await artistModel.findByIdAndUpdate(albumID, deleteAlbum, {
+      new: true
     });
+
+    
     
     // Eliminar canciones del album
     deleteAlbum.songs.forEach(songID => {
