@@ -53,6 +53,7 @@ const removeArtist = async (parent, args, context, info) => {
     return await ArtistModel.findByIdAndRemove(artistID);
     
     // Eliminar albumes del artista
+    
 
     // Eliminar sus canciones
 
