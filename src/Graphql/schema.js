@@ -47,7 +47,7 @@ const typeDefs = gql`
   type AlbumInfo {
     _id: ID
     title: String!
-    genre: [String!]
+    genre: [String]
     artist: Artist
     songs: [Song]
     createdAt: Date
