@@ -1,6 +1,32 @@
 const mongoose = require("mongoose");
 const { UserInputError } = require("apollo-server");
 
+const { createToken } = require("../../Controllers/Authentication");
+
+
+const artistLogin = async (parent, args, context, info) => {
+  try {
+    const { email, password } = args;
+    const artistModel = mongoose.model("user");
+
+    const filterSearch = { email };
+    const currentArtist = await artistModel.findOne(filterSearch);
+    if (currentArtist) {
+      const validLogin = await bcrypt.compare(password, currentArtist.password);
+      if (validLogin) {
+        const token = createToken(currentArtist);
+        return { token };
+      }
+      throw true
+    }
+    throw true
+  } catch (error) {
+    throw new UserInputError('ArtistError al hacer login', {
+      invalidArgs: Object.keys(args),
+    });
+  }
+};
+
 const getArtist = async (parent, args, context, info) => {
   try {
     const { artistID } = args;
@@ -60,8 +86,8 @@ const removeArtist = async (parent, args, context, info) => {
         songModel.findByIdAndRemove(songID);
       });
     });
-    
-    return deletedArtist
+
+    return deletedArtist;
 
     // Eliminar sus canciones
   } catch (error) {
@@ -87,6 +113,7 @@ const getArtistAlbums = async (parent, args, context, info) => {
 
 module.exports = {
   getArtist,
+  artistLogin,
   addArtist,
   updateArtist,
   removeArtist,

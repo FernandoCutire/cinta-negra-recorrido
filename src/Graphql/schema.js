@@ -1,10 +1,12 @@
 const { gql } = require("apollo-server");
 
 const typeDefs = gql`
+  directive @AuthorizationDirective on QUERY | FIELD_DEFINITION | FIELD
+
   scalar Date
 
   type Token {
-    token: String,
+    token: String
   }
 
   # objeto User, de base de datos
@@ -24,10 +26,14 @@ const typeDefs = gql`
     name: String!
     about: String
     albums: [ID]
+    email: String!
+    password: String!
   }
 
   type ArtistInfo {
     _id: ID
+    email: String
+    password: String
     name: String!
     about: String
     albums: [Album]
@@ -78,6 +84,8 @@ const typeDefs = gql`
   input ArtistInput {
     name: String!
     about: String
+    email: String!
+    password: String!
   }
 
   # argumento AlbumInput, para la mutation
@@ -111,23 +119,22 @@ const typeDefs = gql`
     userLogin(email: String!, password: String!): Token
     addUser(userData: UserInput): Token
     updateUser(userID: ID, userData: ArtistInput): User
-    removeUser(userID: ID): User 
+    removeUser(userID: ID): User
 
     # CUD ARTIST
-    addArtist(artistData: ArtistInput): Artist
+    addArtist(artistData: ArtistInput): Token
     updateArtist(artistID: ID, artistData: ArtistInput): Artist
-    removeArtist(artistID: ID): Artist 
-    
+    removeArtist(artistID: ID): Artist
+
     # CUD ALBUM
-    addAlbum(albumData: AlbumInput): Album
-    updateAlbum(albumID: ID, albumData: AlbumInput):Album
+    addAlbum(albumData: AlbumInput): Album @AuthorizationDirective
+    updateAlbum(albumID: ID, albumData: AlbumInput): Album
     removeAlbum(albumID: ID): Album
-    
+
     # CUD SONG
-    addSong(songData: SongInput): Song
+    addSong(songData: SongInput): Song @AuthorizationDirective
     updateSong(songID: ID, songData: SongInput): Song
     removeSong(songID: ID): Song
-    
   }
 `;
 
