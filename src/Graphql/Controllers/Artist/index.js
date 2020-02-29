@@ -60,7 +60,8 @@ const addArtist = async (parent, args, context, info) => {
     const { artistData } = args;
     const artistModel = mongoose.model("artist");
     const artistAdded = await artistModel.create(artistData);
-    return artistAdded;
+    const token = createToken(artistAdded);
+    return { token };
   } catch (error) {
     throw new UserInputError("Error al registrar artista", {
       invalidArgs: Object.keys(args)

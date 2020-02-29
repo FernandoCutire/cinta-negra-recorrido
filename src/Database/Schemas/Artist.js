@@ -19,4 +19,15 @@ mongoose.Types.ObjectId.prototype.valueOf = function() {
   return this.toString();
 };
 
+ArtistSchema.pre("save", function (next) {
+  let artist = this;
+  bcrypt.genSalt(10, function (error, salt) {
+    bcrypt.hash(artist.password, salt, function (error, hash) {
+      if (error) return next(error);
+      artist.password = hash;
+      next();
+    });
+  });
+});
+
 module.exports = ArtistSchema;
