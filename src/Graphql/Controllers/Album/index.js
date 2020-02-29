@@ -64,8 +64,8 @@ const removeAlbum = async (parent, args, context, info) => {
       doc.albums.pull({ _id: albumID });
       doc.save();
       // Eliminar canciones del album
-      deleteAlbum.songs.forEach(songID => {
-        songModel.findByIdAndRemove(songID);
+      deleteAlbum.songs.forEach(async songID => {
+        await songModel.findByIdAndRemove(songID);
       });
     });
 

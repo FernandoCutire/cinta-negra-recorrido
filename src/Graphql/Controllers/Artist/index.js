@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
 const { UserInputError } = require("apollo-server");
-
 const { createToken } = require("../../Controllers/Authentication");
-
 
 const artistLogin = async (parent, args, context, info) => {
   try {
@@ -17,12 +15,12 @@ const artistLogin = async (parent, args, context, info) => {
         const token = createToken(currentArtist);
         return { token };
       }
-      throw true
+      throw true;
     }
-    throw true
+    throw true;
   } catch (error) {
-    throw new UserInputError('ArtistError al hacer login', {
-      invalidArgs: Object.keys(args),
+    throw new UserInputError("ArtistError al hacer login", {
+      invalidArgs: Object.keys(args)
     });
   }
 };
@@ -83,8 +81,8 @@ const removeArtist = async (parent, args, context, info) => {
     deletedArtist.albums.forEach(async albumID => {
       const deletedAlbum = await albumModel.findByIdAndRemove(albumID);
       // Eliminar sus canciones
-      deletedAlbum.songs.forEach(songID => {
-        songModel.findByIdAndRemove(songID);
+      deletedAlbum.songs.forEach(async songID => {
+        await ongModel.findByIdAndRemove(songID);
       });
     });
 
