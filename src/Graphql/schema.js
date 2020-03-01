@@ -92,7 +92,6 @@ const typeDefs = gql`
   # argumento AlbumInput, para la mutation
   input AlbumInput {
     title: String!
-    artist: ID!
     genre: [String]
   }
 
@@ -112,7 +111,7 @@ const typeDefs = gql`
     getSong(songID: ID): Song @AuthorizationArtist
     getArtistAlbums(artistID: ID): ArtistInfo @AuthorizationArtist
     getAlbumSongs(albumID: ID): AlbumInfo @AuthorizationArtist
-    getAlbumArtist(albumID: ID): AlbumInfo
+    getAlbumArtist(albumID: ID): AlbumInfo @AuthorizationArtist
   }
 
   type Mutation {

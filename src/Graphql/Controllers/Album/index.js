@@ -17,13 +17,12 @@ const getAlbum = async (parent, args, context, info) => {
 const addAlbum = async (parent, args, context, info) => {
   try {
     const { albumData } = args;
+    const { artistData } = context;
     const AlbumModel = mongoose.model("album");
     const ArtistModel = mongoose.model("artist");
 
-    console.log(albumData);
     const newAlbum = await AlbumModel.create(albumData);
-    console.log(newAlbum);
-    const filterSearch = { _id: albumData.artist };
+    const filterSearch = { _id: artistData._id };
     const update = { $push: { albums: newAlbum.id } };
 
     await ArtistModel.findOneAndUpdate(filterSearch, update);
