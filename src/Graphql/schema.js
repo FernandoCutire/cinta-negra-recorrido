@@ -1,7 +1,8 @@
 const { gql } = require("apollo-server");
 
 const typeDefs = gql`
-  directive @AuthorizationDirective on QUERY | FIELD_DEFINITION | FIELD
+  directive @AuthorizationUser on QUERY | FIELD_DEFINITION | FIELD
+  directive @AuthorizationArtist on QUERY | FIELD_DEFINITION | FIELD
 
   scalar Date
 
@@ -44,7 +45,7 @@ const typeDefs = gql`
     _id: ID
     title: String!
     genre: [String]
-    artist: ID
+    artist: ID!
     songs: [ID]
     createdAt: Date
     updatedAt: Date
@@ -91,7 +92,7 @@ const typeDefs = gql`
   # argumento AlbumInput, para la mutation
   input AlbumInput {
     title: String!
-    artist: ID
+    artist: ID!
     genre: [String]
   }
 
@@ -107,10 +108,10 @@ const typeDefs = gql`
     # TODOS LOS GETS
     getUser(userID: ID): [User]
     getArtist(artistID: ID): [Artist]
-    getAlbum(albumID: ID): [Album]
-    getSong(songID: ID): Song
-    getArtistAlbums(artistID: ID): ArtistInfo
-    getAlbumSongs(albumID: ID): AlbumInfo
+    getAlbum(albumID: ID): [Album] @AuthorizationArtist
+    getSong(songID: ID): Song @AuthorizationArtist
+    getArtistAlbums(artistID: ID): ArtistInfo @AuthorizationArtist
+    getAlbumSongs(albumID: ID): AlbumInfo @AuthorizationArtist
     getAlbumArtist(albumID: ID): AlbumInfo
   }
 
@@ -127,13 +128,13 @@ const typeDefs = gql`
     removeArtist(artistID: ID): Artist
 
     # CUD ALBUM
-    addAlbum(albumData: AlbumInput): Album @AuthorizationDirective
-    updateAlbum(albumID: ID, albumData: AlbumInput): Album
-    removeAlbum(albumID: ID): Album
+    addAlbum(albumData: AlbumInput): Album @AuthorizationArtist
+    updateAlbum(albumID: ID, albumData: AlbumInput): Album  @AuthorizationArtist
+    removeAlbum(albumID: ID): Album @AuthorizationArtist
 
     # CUD SONG
-    addSong(songData: SongInput): Song @AuthorizationDirective
-    updateSong(songID: ID, songData: SongInput): Song
+    addSong(songData: SongInput): Song @AuthorizationArtist
+    updateSong(songID: ID, songData: SongInput): Song 
     removeSong(songID: ID): Song
   }
 `;

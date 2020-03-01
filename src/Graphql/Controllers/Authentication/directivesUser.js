@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const { SchemaDirectiveVisitor, AuthenticationError } = require('apollo-server');
 const { defaultFieldResolver } = require('graphql');
 
-class AuthorizationDirective extends SchemaDirectiveVisitor {
+class AuthorizationUser extends SchemaDirectiveVisitor {
     visitFieldDefinition(field) {
         const { resolve = defaultFieldResolver } = field;
         field.resolve = async function (...args) {
@@ -19,9 +19,9 @@ class AuthorizationDirective extends SchemaDirectiveVisitor {
     }
 };
 
-const getContext = (req) => {
+const getContextUser = (req) => {
     try {
-        const token = req.headers.authorizationtoken;
+        const token = req.headers.userauthorizationtoken;
         if (typeof token === typeof undefined) return req;
         return jwt.verify(
             token,
@@ -43,6 +43,6 @@ const getContext = (req) => {
 }
 
 module.exports = {
-    AuthorizationDirective,
-    getContext
+    AuthorizationUser,
+    getContextUser
 };

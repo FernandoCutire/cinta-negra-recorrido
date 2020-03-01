@@ -1,11 +1,12 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 const { UserInputError } = require("apollo-server");
 const { createToken } = require("../../Controllers/Authentication");
 
 const artistLogin = async (parent, args, context, info) => {
   try {
     const { email, password } = args;
-    const artistModel = mongoose.model("user");
+    const artistModel = mongoose.model("artist");
 
     const filterSearch = { email };
     const currentArtist = await artistModel.findOne(filterSearch);
@@ -19,7 +20,7 @@ const artistLogin = async (parent, args, context, info) => {
     }
     throw true;
   } catch (error) {
-    throw new UserInputError("ArtistError al hacer login", {
+    throw new UserInputError("Error al iniciar sesión como artista", {
       invalidArgs: Object.keys(args)
     });
   }

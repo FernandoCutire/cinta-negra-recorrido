@@ -6,9 +6,14 @@ const typeDefs = require("./Graphql/schema");
 const resolvers = require("./Graphql/resolvers");
 
 const {
-  AuthorizationDirective,
-  getContext
-} = require("./Graphql/Controllers/Authentication/directives");
+  AuthorizationUser,
+  getContextUser,
+} = require("./Graphql/Controllers/Authentication/directivesUser");
+
+const {
+  AuthorizationArtist,
+  getContextArtist,
+} = require("./Graphql/Controllers/AuthenticationArtist/directiveArtist");
 
 mongoose
   .connect(process.env.URL_DATABASE, {
@@ -27,9 +32,11 @@ mongoose
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: async ({ req }) => getContext(req),
+  context: async ({ req }) => getContextUser(req),
+  context: async ({ req }) => getContextArtist(req),
   schemaDirectives: {
-    AuthorizationDirective
+    AuthorizationUser,
+    AuthorizationArtist
   }
 });
 
