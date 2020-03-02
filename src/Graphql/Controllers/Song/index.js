@@ -2,20 +2,20 @@ const mongoose = require("mongoose");
 const { UserInputError } = require("apollo-server");
 
 const uploaderFunction = require('../Uploader');
-  
+
 // ----------------------- CRUD
 const addSong = async (parent, args, context, info) => {
   try {
     const { songData } = args;
     const songModel = mongoose.model("song");
     const graphqlStream = songData.song ? await songData.song : null;
-    let newSongData = { ...songData, profileImage: null };
+    let newSongData = { ...songData, song: null };
     if (graphqlStream) {
       const { createReadStream } = graphqlStream;
       const cloudinaryStream = await createReadStream();
       //
       const { url } = await uploaderFunction(cloudinaryStream, "video");
-      if (url) newSongData = { ...songData, profileImage: url };
+      if (url) newSongData = { ...songData, song: url };
     }
     const albumModel = mongoose.model("album");
     const newSong = await songModel.create(newSongData);
