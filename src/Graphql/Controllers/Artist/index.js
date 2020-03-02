@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt");
 const { UserInputError } = require("apollo-server");
 const { createToken } = require("../../Controllers/Authentication");
 
+const uploaderFunction = require("../Uploader");
+
 const artistLogin = async (parent, args, context, info) => {
   try {
     const { email, password } = args;
@@ -58,7 +60,16 @@ const addArtist = async (parent, args, context, info) => {
   try {
     const { artistData } = args;
     const artistModel = mongoose.model("artist");
-    const artistAdded = await artistModel.create(artistData);
+    const graphqlStream = artistData.profileImage ? await artistData.profileImage : null;
+    let newArtistData = {...artistData, profileImage: null};
+    if(graphqlStream){
+      const { createReadStream } = graphqlStream;
+      const cloudinaryStream = await createReadStream();
+      // cambiale a "video" para poner audio
+      const { url } = await uploaderFunction(cloudinaryStream, "image");
+      if(url) newArtistData = {...artistData, profileImage: url};
+    }
+    const artistAdded = await artistModel.create(newArtistData);
     const token = createToken(artistAdded);
     return { token };
   } catch (error) {

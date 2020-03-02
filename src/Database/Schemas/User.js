@@ -11,6 +11,7 @@ const UserSchema = new Schema(
     password: { type: String, required: true },
     // Para que el correo sea unico
     email: { type: String, required: true, unique: true },
+    profileImage: { type: String },
     publications: [
       {
         type: Schema.Types.ObjectId,
@@ -21,15 +22,14 @@ const UserSchema = new Schema(
   { timestamps: true }
 );
 
-
 mongoose.Types.ObjectId.prototype.valueOf = function() {
   return this.toString();
 };
 
-UserSchema.pre("save", function (next) {
+UserSchema.pre("save", function(next) {
   let user = this;
-  bcrypt.genSalt(10, function (error, salt) {
-    bcrypt.hash(user.password, salt, function (error, hash) {
+  bcrypt.genSalt(10, function(error, salt) {
+    bcrypt.hash(user.password, salt, function(error, hash) {
       if (error) return next(error);
       user.password = hash;
       next();

@@ -1,15 +1,14 @@
 const mongoose = require("mongoose");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const { UserInputError } = require("apollo-server");
 
 const { createToken } = require("../../Controllers/Authentication");
-
+const uploaderFunction = require("../Uploader");
 
 const userLogin = async (parent, args, context, info) => {
   try {
     const { email, password } = args;
-    const UserModel = mongoose.model('user');
-
+    const UserModel = mongoose.model("user");
     const filterSearch = { email };
     const currentUser = await UserModel.findOne(filterSearch);
     if (currentUser) {
@@ -22,11 +21,11 @@ const userLogin = async (parent, args, context, info) => {
     }
     throw true;
   } catch (error) {
-    throw new UserInputError('Error al hacer login', {
-      invalidArgs: Object.keys(args),
+    throw new UserInputError("Error al hacer login", {
+      invalidArgs: Object.keys(args)
     });
   }
-}
+};
 
 const getUser = async (parent, args, context, info) => {
   try {
@@ -42,13 +41,20 @@ const getUser = async (parent, args, context, info) => {
   }
 };
 
-
-
 const addUser = async (parent, args, context, info) => {
   try {
     const { userData } = args;
     const userModel = mongoose.model("user");
-    const userAdded = await userModel.create(userData);
+    const graphqlStream = userData.profileImage ? await userData.profileImage : null;
+    let newUserData = { ...userData, profileImage: null };
+    if (graphqlStream) {
+      const { createReadStream } = graphqlStream;
+      const cloudinaryStream = await createReadStream();
+      //resource_type: "video" video/audio
+      const { url } = await uploaderFunction(cloudinaryStream, 'image');
+      if (url) newUserData = { ...userData, profileImage: url };
+    }
+    const userAdded = await userModel.create(newUserData);
     const token = createToken(userAdded);
     return { token };
   } catch (error) {

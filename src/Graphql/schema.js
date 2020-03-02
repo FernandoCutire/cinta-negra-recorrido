@@ -79,6 +79,7 @@ const typeDefs = gql`
     email: String!
     lastName: String
     password: String!
+    profileImage: Upload
   }
 
   # argumento ArtistInput, para la mutation
@@ -87,6 +88,7 @@ const typeDefs = gql`
     about: String
     email: String!
     password: String!
+    profileImage: Upload
   }
 
   # argumento AlbumInput, para la mutation
@@ -101,6 +103,7 @@ const typeDefs = gql`
     genre: String!
     albumID: ID!
     duration: String!
+    song: Upload
   }
 
   type Query {
@@ -128,12 +131,12 @@ const typeDefs = gql`
 
     # CUD ALBUM
     addAlbum(albumData: AlbumInput): Album @AuthorizationArtist
-    updateAlbum(albumID: ID, albumData: AlbumInput): Album  @AuthorizationArtist
+    updateAlbum(albumID: ID, albumData: AlbumInput): Album @AuthorizationArtist
     removeAlbum(albumID: ID): Album @AuthorizationArtist
 
     # CUD SONG
     addSong(songData: SongInput): Song @AuthorizationArtist
-    updateSong(songID: ID, songData: SongInput): Song 
+    updateSong(songID: ID, songData: SongInput): Song
     removeSong(songID: ID): Song
   }
 `;

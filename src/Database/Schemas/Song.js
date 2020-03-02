@@ -8,7 +8,8 @@ const SongSchema = new Schema(
     title: { type: String, required: true },
     genre: { type: String },
     duration: { type: String, required: true },
-    albumID: { type: Schema.Types.ObjectId, ref: "album" }
+    albumID: { type: Schema.Types.ObjectId, ref: "album" },
+    song: {type: String}
   },
   { timestamps: true }
 );

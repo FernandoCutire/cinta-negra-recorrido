@@ -6,12 +6,19 @@ const addSong = async (parent, args, context, info) => {
   try {
     const { songData } = args;
     const songModel = mongoose.model("song");
+    const graphqlStream = songData.song ? await songData.song : null;
+    let newSongData = { ...songData, profileImage: null };
+    if (graphqlStream) {
+      const { createReadStream } = graphqlStream;
+      const cloudinaryStream = await createReadStream();
+      //
+      const { url } = await uploaderFunction(cloudinaryStream, "video");
+      if (url) newSongData = { ...songData, profileImage: url };
+    }
     const albumModel = mongoose.model("album");
-
-
-    const newSong = await songModel.create(songData);
+    const newSong = await songModel.create(newSongData);
     const filterSearch = { _id: songData.albumID };
-    const update = { $push: { songs: newSong.id} };
+    const update = { $push: { songs: newSong.id } };
 
     await albumModel.findOneAndUpdate(filterSearch, update);
     return newSong;
