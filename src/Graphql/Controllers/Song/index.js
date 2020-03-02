@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const { UserInputError } = require("apollo-server");
 
+const uploaderFunction = require('../Uploader');
+  
 // ----------------------- CRUD
 const addSong = async (parent, args, context, info) => {
   try {
