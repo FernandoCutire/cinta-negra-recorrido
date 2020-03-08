@@ -19,6 +19,7 @@ const typeDefs = gql`
     email: String!
     createdAt: Date
     updatedAt: Date
+    password: String
   }
 
   # objeto Artist, de base de datos

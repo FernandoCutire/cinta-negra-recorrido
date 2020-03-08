@@ -4,8 +4,15 @@
   "description": "Nada",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "development": "nodemon --watch src/ ./src/index.development.js"
+    "test": "jest --coverage",
+    "development": "nodemon --watch src/ ./src/index.development.js",
+    "start": "node src/index"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js, jsx}"
+    ],
+    "testEnvironment": "node"
   },
   "author": "Fernando",
   "license": "MIT",
@@ -15,7 +22,8 @@
     "cloudinary": "^1.19.0",
     "graphql": "^14.6.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.2"
+    "mongoose": "^5.9.2",
+    "jest": "^25.1.0"
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
