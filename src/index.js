@@ -15,8 +15,9 @@ const {
   getContextArtist,
 } = require("./Graphql/Controllers/AuthenticationArtist/directiveArtist");
 
-mongoose
-  .connect(process.env.URL_DATABASE, {
+mongoose.connect(
+  process.env.URL_DATABASE, 
+  {
     useUnifiedTopology: true,
     useNewUrlParser: true,
     useCreateIndex: true,
