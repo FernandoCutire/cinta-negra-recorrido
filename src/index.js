@@ -37,7 +37,9 @@ const server = new ApolloServer({
   schemaDirectives: {
     AuthorizationUser,
     AuthorizationArtist
-  }
+  },
+  introspection: true,
+  playground: true,
 });
 
 server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
