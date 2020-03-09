@@ -66,9 +66,16 @@ const removeSong = async (parent, args, context, info) => {
     const albumModel = mongoose.model("album");
 
     // Elimina cancion
-    return await SongModel.findByIdAndRemove(songID);
+    const deleteSong = await SongModel.findByIdAndRemove(songID);
 
     // Elimina la cancion del album
+    albumModel.findById(deleteSong.albumID, function(err, doc) {
+      doc.albums.pull({_id: songID});
+      doc.save();
+    })
+
+    return deleteSong;
+
   } catch (error) {
     throw new UserInputError("Error al eliminar cancion", {
       invalidArgs: Object.keys(args)
