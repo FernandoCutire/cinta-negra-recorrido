@@ -21,9 +21,9 @@
     "bcrypt": "^4.0.0",
     "cloudinary": "^1.19.0",
     "graphql": "^14.6.0",
+    "jest": "^25.1.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.2",
-    "jest": "^25.1.0"
+    "mongoose": "^5.9.2"
   },
   "devDependencies": {
     "dotenv": "^8.2.0",

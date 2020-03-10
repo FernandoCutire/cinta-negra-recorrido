@@ -1,6 +1,6 @@
 const { ApolloServer } = require("apollo-server");
 const mongoose = require("mongoose");
-require("./DataBase/Models");
+require("./Database/Models");
 
 const typeDefs = require("./Graphql/schema");
 const resolvers = require("./Graphql/resolvers");
@@ -38,7 +38,8 @@ const server = new ApolloServer({
   schemaDirectives: {
     AuthorizationUser,
     AuthorizationArtist
-  }
+  },
+  introspection: true
 });
 
 server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
