@@ -1,3 +1,6 @@
 node_modules
+temp_auto_push.bat
 .env
 coverage
+.gitignore
+branch_structure.json
